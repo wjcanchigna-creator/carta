@@ -206,12 +206,12 @@
 
     <!-- Carta Principal -->
     <div class="card" id="card">
-        <div class="page-indicator" id="page-indicator">Page 1 of 7</div>
+        <div class="page-indicator" id="page-indicator">Page 1 of 10</div>
         <div class="heart-icon" id="card-icon">💖</div>
         <h1 id="title">Loading...</h1>
         <p id="message">Loading...</p>
 
-        <!-- Contador de tiempo (se muestra en las páginas) -->
+        <!-- Contador de tiempo -->
         <div class="timer-box" id="timer-box">
             <div class="timer-title">Time spent loving you</div>
             <div class="timer" id="timer">Calculating...</div>
@@ -234,7 +234,7 @@
         // CAMBIA AQUÍ LA FECHA EN QUE EMPEZARON A SALIR: (Año, Mes-1, Día)
         const startDate = new Date(2023, 0, 1); 
 
-        // Pestañas / Páginas con mensajes bonitos
+        // Pestañas / Páginas con los nuevos mensajes
         const steps = [
             {
                 icon: "💖",
@@ -247,14 +247,24 @@
                 message: "Paper fades, gets lost, or crumples over time... But this code lives online forever. Exactly like my love and admiration for you."
             },
             {
-                icon: "🌟",
-                title: "My Favorite Detail",
-                message: "Out of 8 billion people on this planet, meeting you was the happiest coincidence of my life. Your smile literally makes my hard days infinitely better."
+                icon: "☀️",
+                title: "My Sunshine",
+                message: "They say the sun lights up the day, but I discovered that some people can do it even from afar. You became that little sun in my difficult days, and I want to keep walking with you—not just as someone who makes me smile, but as someone I want to cherish."
+            },
+            {
+                icon: "🌍",
+                title: "Destiny",
+                message: "We come from different places, with different schedules and lives, but somehow we found a space where our laughter, stories, and dreams fit. I love thinking it wasn't just coincidence that brought us together."
+            },
+            {
+                icon: "📖",
+                title: "Written in My Life",
+                message: "You told me you had never received a letter, but without noticing, you wrote many pages in my life: our talks, our jokes, your dreams, and every moment we share. I hope one day we look back and say: it was all worth it."
             },
             {
                 icon: "🌷",
                 title: "Thank You For Everything",
-                message: "Thank you for every single laugh, for your sweet heart, for listening to me, and for being my absolute favorite person to talk to."
+                message: "Thank you for every single laugh, for your sweet heart, for listening to me, and for being my absolute favorite person in the whole world."
             },
             {
                 icon: "⏳",
@@ -267,9 +277,14 @@
                 message: "No matter how busy life gets or where we are, you will always be my safe place and my favorite notification on my phone."
             },
             {
+                icon: "✨",
+                title: "A New Chapter",
+                message: "Out of 8 billion people, I'm so glad I found you. I want to keep building a million more memories together."
+            },
+            {
                 icon: "💍",
                 title: "I Have One Question...",
-                message: "Since we're creating new memories every day... Will you officially be my girlfriend? ❤️"
+                message: "Since we're creating new memories every day... Will you officially be my girlfriend, my Naygelita? ❤️"
             }
         ];
 
@@ -300,7 +315,6 @@
                 currentStep++;
                 renderStep();
 
-                // Si llegamos a la última página, mostramos los botones de respuesta
                 if (currentStep === steps.length - 1) {
                     document.getElementById('btn-next').classList.add('hidden');
                     document.getElementById('final-section').classList.remove('hidden');
@@ -322,7 +336,7 @@
         function acceptProposal() {
             document.getElementById('final-section').classList.add('hidden');
             const finalText = document.getElementById('final-text');
-            finalText.innerText = "I knew you'd say YES! I love you so much! ❤️🎉🥰";
+            finalText.innerText = "I knew you'd say YES! I love you so much, Naygelita! ❤️🎉🥰";
             finalText.classList.remove('hidden');
 
             // Lluvia de confeti
