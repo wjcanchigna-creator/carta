@@ -74,7 +74,7 @@
             max-width: 420px;
             width: 100%;
             display: none;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 0.8s ease-in-out;
             position: relative;
         }
 
@@ -87,7 +87,7 @@
         h1 {
             color: #e63946;
             font-size: 22px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         p {
@@ -118,6 +118,14 @@
             font-weight: bold;
             color: #c9184a;
             margin-top: 5px;
+        }
+
+        /* Progress indicator */
+        .page-indicator {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         /* Buttons */
@@ -176,7 +184,7 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -198,11 +206,12 @@
 
     <!-- Carta Principal -->
     <div class="card" id="card">
-        <div class="heart-icon">💖</div>
-        <h1 id="title">You once told me...</h1>
-        <p id="message">You had never received a love letter before. So I decided that your very first one couldn't be on ordinary paper... It had to be written line by line in code. ✨</p>
+        <div class="page-indicator" id="page-indicator">Page 1 of 7</div>
+        <div class="heart-icon" id="card-icon">💖</div>
+        <h1 id="title">Loading...</h1>
+        <p id="message">Loading...</p>
 
-        <!-- Contador de tiempo -->
+        <!-- Contador de tiempo (se muestra en las páginas) -->
         <div class="timer-box" id="timer-box">
             <div class="timer-title">Time spent loving you</div>
             <div class="timer" id="timer">Calculating...</div>
@@ -223,25 +232,44 @@
 
     <script>
         // CAMBIA AQUÍ LA FECHA EN QUE EMPEZARON A SALIR: (Año, Mes-1, Día)
-        // Ejemplo: para 15 de Mayo de 2023 -> Date(2023, 4, 15)
         const startDate = new Date(2023, 0, 1); 
 
+        // Pestañas / Páginas con mensajes bonitos
         const steps = [
             {
+                icon: "💖",
                 title: "You once told me...",
-                message: "You had never received a love letter before. So I decided that your very first one couldn't be on ordinary paper... It had to be written line by line in code. ✨"
+                message: "You had never received a love letter before. So I decided that your very first one couldn't be written on ordinary paper... It had to be built line by line, just for you. ✨"
             },
             {
-                title: "Living in the Cloud ❤️",
-                message: "Paper fades and gets lost over time, but this letter will stay online forever—just like my feelings for you."
+                icon: "☁️",
+                title: "Living in the Cloud",
+                message: "Paper fades, gets lost, or crumples over time... But this code lives online forever. Exactly like my love and admiration for you."
             },
             {
-                title: "Thank you for everything",
-                message: "Thank you for being my favorite laugh, my safe place, and my best partner in life. Every single day with you is a blessing."
+                icon: "🌟",
+                title: "My Favorite Detail",
+                message: "Out of 8 billion people on this planet, meeting you was the happiest coincidence of my life. Your smile literally makes my hard days infinitely better."
             },
             {
-                title: "I have one important question...",
-                message: "Since we are making new memories today... Will you officially be my girlfriend? 💍✨"
+                icon: "🌷",
+                title: "Thank You For Everything",
+                message: "Thank you for every single laugh, for your sweet heart, for listening to me, and for being my absolute favorite person to talk to."
+            },
+            {
+                icon: "⏳",
+                title: "Every Second Counts",
+                message: "Look at the timer above... Every second spent knowing you has been worth it. And honestly? I want to keep counting time by your side for a very long time."
+            },
+            {
+                icon: "🔐",
+                title: "A Little Secret",
+                message: "No matter how busy life gets or where we are, you will always be my safe place and my favorite notification on my phone."
+            },
+            {
+                icon: "💍",
+                title: "I Have One Question...",
+                message: "Since we're creating new memories every day... Will you officially be my girlfriend? ❤️"
             }
         ];
 
@@ -255,15 +283,24 @@
             const music = document.getElementById('bg-music');
             music.play().catch(e => console.log("Audio waiting for interaction", e));
 
+            renderStep();
             startTimer();
         }
 
-        function nextStep() {
-            currentStep++;
-            if (currentStep < steps.length) {
-                document.getElementById('title').innerText = steps[currentStep].title;
-                document.getElementById('message').innerText = steps[currentStep].message;
+        function renderStep() {
+            const step = steps[currentStep];
+            document.getElementById('page-indicator').innerText = `Page ${currentStep + 1} of ${steps.length}`;
+            document.getElementById('card-icon').innerText = step.icon;
+            document.getElementById('title').innerText = step.title;
+            document.getElementById('message').innerText = step.message;
+        }
 
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+
+                // Si llegamos a la última página, mostramos los botones de respuesta
                 if (currentStep === steps.length - 1) {
                     document.getElementById('btn-next').classList.add('hidden');
                     document.getElementById('final-section').classList.remove('hidden');
@@ -290,8 +327,8 @@
 
             // Lluvia de confeti
             confetti({
-                particleCount: 120,
-                spread: 70,
+                particleCount: 150,
+                spread: 80,
                 origin: { y: 0.6 }
             });
         }
