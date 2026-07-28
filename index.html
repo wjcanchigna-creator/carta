@@ -1,58 +1,309 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi amor ❤️</title>
-    <link rel="stylesheet" href="style.css">
+    <title>A Special Letter For You ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            cursor: pointer;
+            text-align: center;
+            animation: bounce 2s infinite;
+        }
+
+        .envelope {
+            width: 280px;
+            height: 180px;
+            background: #e63946;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #d62828;
+        }
+
+        .envelope-heart {
+            font-size: 50px;
+            z-index: 2;
+        }
+
+        .envelope-text {
+            margin-top: 20px;
+            color: #d62828;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+        }
+
+        .heart-icon {
+            font-size: 45px;
+            animation: pulse 1.5s infinite;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #e63946;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Timer Styles */
+        .timer-box {
+            background: #fff0f3;
+            border: 2px dashed #ffb3c1;
+            padding: 12px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+
+        .timer-title {
+            font-size: 13px;
+            color: #ff4d6d;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .timer {
+            font-size: 16px;
+            font-weight: bold;
+            color: #c9184a;
+            margin-top: 5px;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+            min-height: 50px;
+        }
+
+        button {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #d62828;
+        }
+
+        #btn-no {
+            background-color: #6c757d;
+            position: relative;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .final-message {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e63946;
+            margin-top: 20px;
+            animation: fadeIn 0.8s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-    <div class="card">
-        <div class="heart">❤️</div>
-        <h1 id="titulo">Una carta especial...</h1>
-        <p id="mensaje">Dijiste que nunca habías recibido una carta de amor, así que decidí programarte una. ✨</p>
-        
-        <button id="btn-accion" onclick="siguientePaso()">Siguiente ➡️</button>
 
-        <div id="opciones-finales" class="oculto">
-            <button class="btn-final" onclick="respuesta('si')">¡Me encantó! 🥰</button>
-            <button class="btn-final btn-secundario" onclick="respuesta('no')">Quiero la versión 2.0 🍫</button>
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112185.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="envelope-wrapper" id="envelope-wrapper" onclick="openEnvelope()">
+        <div class="envelope">
+            <div class="envelope-heart">💌</div>
+        </div>
+        <div class="envelope-text">Tap to open your letter ✨</div>
+    </div>
+
+    <div class="card" id="card">
+        <div class="heart-icon">💖</div>
+        <h1 id="title">You once told me...</h1>
+        <p id="message">You had never received a love letter before. So I decided that your very first one couldn't be on ordinary paper... It had to be written line by line in code. ✨</p>
+
+        <div class="timer-box" id="timer-box">
+            <div class="timer-title">Time spent loving you</div>
+            <div class="timer" id="timer">Calculating...</div>
         </div>
 
-        <p id="respuesta-texto" class="respuesta"></p>
+        <button id="btn-next" onclick="nextStep()">Next ➡️</button>
+
+        <div id="final-section" class="hidden">
+            <div class="btn-container">
+                <button id="btn-yes" onclick="acceptProposal()">YES! 🥰</button>
+                <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">No 😜</button>
+            </div>
+        </div>
+
+        <div id="final-text" class="final-message hidden"></div>
     </div>
 
     <script>
-        const pasos = [
-            { titulo: "Una carta especial...", mensaje: "Dijiste que nunca habías recibido una carta de amor, así que decidí programarte una. ✨" },
-            { titulo: "Hecha línea por línea", mensaje: "Porque algo tan bonito como lo que siento por ti no podía ir en un papel común. 💻❤️" },
-            { titulo: "Gracias por todo", mensaje: "Gracias por ser mi compañera, mi risa favorita y mi lugar seguro todos los días." },
-            { titulo: "Tengo una pregunta...", mensaje: "¿Qué te pareció tu primera carta de amor interactiva?" }
+        // CONFIGURA AQUÍ LA FECHA DE INICIO (Año, Mes - 1, Día)
+        // Ejemplo: 2023, 4 (Mayo es mes 4 porque empieza en 0), 15
+        const startDate = new Date(2023, 0, 1); 
+
+        const steps = [
+            {
+                title: "You once told me...",
+                message: "You had never received a love letter before. So I decided that your very first one couldn't be on ordinary paper... It had to be written line by line in code. ✨"
+            },
+            {
+                title: "Living in the Cloud ❤️",
+                message: "Paper fades and gets lost over time, but this letter will stay online forever—just like my feelings for you."
+            },
+            {
+                title: "Thank you for everything",
+                message: "Thank you for being my favorite laugh, my safe place, and my best partner in life. Every single day with you is a blessing."
+            },
+            {
+                title: "I have one important question...",
+                message: "Since we are making new memories today... Will you officially be my girlfriend? 💍✨"
+            }
         ];
 
-        let pasoActual = 0;
+        let currentStep = 0;
 
-        function siguientePaso() {
-            pasoActual++;
-            if (pasoActual < pasos.length) {
-                document.getElementById('titulo').innerText = pasos[pasoActual].titulo;
-                document.getElementById('mensaje').innerText = pasos[pasoActual].mensaje;
-                
-                if (pasoActual === pasos.length - 1) {
-                    document.getElementById('btn-accion').style.display = 'none';
-                    document.getElementById('opciones-finales').classList.remove('oculto');
+        function openEnvelope() {
+            document.getElementById('envelope-wrapper').style.display = 'none';
+            document.getElementById('card').style.display = 'block';
+            
+            // Reproducir música
+            const music = document.getElementById('bg-music');
+            music.play().catch(e => console.log("Audio waiting for interaction"));
+
+            startTimer();
+        }
+
+        function nextStep() {
+            currentStep++;
+            if (currentStep < steps.length) {
+                document.getElementById('title').innerText = steps[currentStep].title;
+                document.getElementById('message').innerText = steps[currentStep].message;
+
+                if (currentStep === steps.length - 1) {
+                    document.getElementById('btn-next').classList.add('hidden');
+                    document.getElementById('final-section').classList.remove('hidden');
                 }
             }
         }
 
-        function respuesta(tipo) {
-            const respTexto = document.getElementById('respuesta-texto');
-            document.getElementById('opciones-finales').style.display = 'none';
-            if (tipo === 'si') {
-                respTexto.innerText = "¡Sabía que te sacaría una sonrisa! Te amo con todo mi corazón. 💖";
-            } else {
-                respTexto.innerText = "¡Prometo que la versión 2.0 vendrá con chocolates y tu cena favorita! 🍫🍷";
-            }
+        // Función para mover el botón NO
+        function moveButton() {
+            const btnNo = document.getElementById('btn-no');
+            const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2 - 60);
+            const y = Math.random() * (window.innerHeight - 120) - (window.innerHeight / 2 - 60);
+            
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = Math.max(20, Math.min(window.innerWidth - 100, Math.abs(x))) + 'px';
+            btnNo.style.top = Math.max(20, Math.min(window.innerHeight - 50, Math.abs(y))) + 'px';
+        }
+
+        function acceptProposal() {
+            document.getElementById('final-section').classList.add('hidden');
+            const finalText = document.getElementById('final-text');
+            finalText.innerText = "I knew you'd say YES! I love you so much! ❤️🎉🥰";
+            finalText.classList.remove('hidden');
+
+            // Lluvia de corazones / confeti
+            confetti({
+                particleCount: 120,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Actualizar contador
+        function startTimer() {
+            setInterval(() => {
+                const now = new Date();
+                const diff = now - startDate;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById('timer').innerText = 
+                    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
         }
     </script>
 </body>
