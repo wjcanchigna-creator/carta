@@ -1,0 +1,89 @@
+body {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.heart {
+    font-size: 50px;
+    margin-bottom: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+h1 {
+    color: #e63946;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 80px;
+}
+
+button {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    margin: 5px;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background-color: #d62828;
+}
+
+.btn-secundario {
+    background-color: #6c757d;
+}
+
+.btn-secundario:hover {
+    background-color: #495057;
+}
+
+.oculto {
+    display: none;
+}
+
+.respuesta {
+    font-weight: bold;
+    color: #e63946;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
