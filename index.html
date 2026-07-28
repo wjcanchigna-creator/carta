@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Special Letter For You ❤️</title>
+    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * {
@@ -182,10 +183,12 @@
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112185.mp3" type="audio/mpeg">
+    <!-- Audio Player conectado a tu archivo MP3 -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="cancion.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Sobre Inicial -->
     <div class="envelope-wrapper" id="envelope-wrapper" onclick="openEnvelope()">
         <div class="envelope">
             <div class="envelope-heart">💌</div>
@@ -193,11 +196,13 @@
         <div class="envelope-text">Tap to open your letter ✨</div>
     </div>
 
+    <!-- Carta Principal -->
     <div class="card" id="card">
         <div class="heart-icon">💖</div>
         <h1 id="title">You once told me...</h1>
         <p id="message">You had never received a love letter before. So I decided that your very first one couldn't be on ordinary paper... It had to be written line by line in code. ✨</p>
 
+        <!-- Contador de tiempo -->
         <div class="timer-box" id="timer-box">
             <div class="timer-title">Time spent loving you</div>
             <div class="timer" id="timer">Calculating...</div>
@@ -205,6 +210,7 @@
 
         <button id="btn-next" onclick="nextStep()">Next ➡️</button>
 
+        <!-- Pregunta Final -->
         <div id="final-section" class="hidden">
             <div class="btn-container">
                 <button id="btn-yes" onclick="acceptProposal()">YES! 🥰</button>
@@ -216,8 +222,8 @@
     </div>
 
     <script>
-        // CONFIGURA AQUÍ LA FECHA DE INICIO (Año, Mes - 1, Día)
-        // Ejemplo: 2023, 4 (Mayo es mes 4 porque empieza en 0), 15
+        // CAMBIA AQUÍ LA FECHA EN QUE EMPEZARON A SALIR: (Año, Mes-1, Día)
+        // Ejemplo: para 15 de Mayo de 2023 -> Date(2023, 4, 15)
         const startDate = new Date(2023, 0, 1); 
 
         const steps = [
@@ -245,9 +251,9 @@
             document.getElementById('envelope-wrapper').style.display = 'none';
             document.getElementById('card').style.display = 'block';
             
-            // Reproducir música
+            // Reproducir música subida
             const music = document.getElementById('bg-music');
-            music.play().catch(e => console.log("Audio waiting for interaction"));
+            music.play().catch(e => console.log("Audio waiting for interaction", e));
 
             startTimer();
         }
@@ -265,7 +271,7 @@
             }
         }
 
-        // Función para mover el botón NO
+        // Mover el botón NO cuando intenten tocarlo
         function moveButton() {
             const btnNo = document.getElementById('btn-no');
             const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2 - 60);
@@ -282,7 +288,7 @@
             finalText.innerText = "I knew you'd say YES! I love you so much! ❤️🎉🥰";
             finalText.classList.remove('hidden');
 
-            // Lluvia de corazones / confeti
+            // Lluvia de confeti
             confetti({
                 particleCount: 120,
                 spread: 70,
@@ -290,7 +296,6 @@
             });
         }
 
-        // Actualizar contador
         function startTimer() {
             setInterval(() => {
                 const now = new Date();
